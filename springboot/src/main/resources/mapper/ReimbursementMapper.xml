@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.ReimbursementMapper">
+
+    <sql id="Base_Column_List">
+        id,type,name,time,note,apply_id,amount,submitted,employee_id
+    </sql>
+    <select id="selectAll" resultType="com.example.entity.voucher.Reimbursement">
+        select reimbursement.*, reimbursementapply.process as process, reimbursementapply.status as status
+        from reimbursement
+        left join reimbursementapply on reimbursementapply.reimbursement_id = reimbursement.id
+        <where>
+            <if test="id != null"> and id= #{id}</if>
+            <if test="employeeId != null"> and reimbursement.employee_id = #{employeeId}</if>
+            <if test="name != null"> and name like concat('%', #{name}, '%')</if>
+            <if test="type != null"> and type= #{type}</if>
+            <if test="time != null"> and reimbursement.time= #{time}</if>
+            <if test="note != null"> and reimbursement.note= #{note}</if>
+            <if test="applyId != null"> and apply_id= #{applyId}</if>
+            <if test="amount != null"> and amount= #{amount}</if>
+            <if test="submitted != 0 and submitted != null"> and submitted= #{submitted}</if>
+            <if test="submitted == 0"> and submitted != 0</if>
+        </where>
+    </select>
+
+    <select id="selectApply" resultType="com.example.entity.voucher.Reimbursement">
+        select reimbursement.*, reimbursementapply.process as process, reimbursementapply.status as status
+        from reimbursement
+        left join reimbursementapply on reimbursementapply.reimbursement_id = reimbursement.id
+        <where>
+            <if test="id != null"> and id= #{id}</if>
+            <if test="name != null"> and name like concat('%', #{name}, '%')</if>
+            <if test="type != null"> and type= #{type}</if>
+            <if test="time != null"> and reimbursement.time= #{time}</if>
+            <if test="note != null"> and reimbursement.note= #{note}</if>
+            <if test="applyId != null"> and apply_id= #{applyId}</if>
+            <if test="amount != null"> and amount= #{amount}</if>
+            <if test="submitted != null"> and submitted= #{submitted}</if>
+            <if test="process != null"> and reimbursementapply.process= #{process}</if>
+        </where>
+    </select>
+
+
+    <delete id="deleteById">
+        delete from reimbursement
+        where  id =  #{id}
+    </delete>
+
+    <select id="selectById" resultType="com.example.entity.voucher.Reimbursement">
+        select
+        <include refid="Base_Column_List" />
+        from reimbursement
+        where id = #{id}
+    </select>
+
+    <select id="selectByName" resultType="com.example.entity.voucher.Reimbursement">
+        select
+        <include refid="Base_Column_List" />
+        from reimbursement
+        where name = #{name}
+    </select>
+
+
+
+
+    <insert id="insert" parameterType="com.example.entity.voucher.Reimbursement" useGeneratedKeys="true" keyProperty="id">
+        insert into reimbursement
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="name != null">name,</if>
+            <if test="type != null">type,</if>
+            <if test="time != null">time,</if>
+            <if test="note != null">note,</if>
+            <if test="applyId != null">apply_id,</if>
+            <if test="amount != null">amount,</if>
+            <if test="submitted != null">submitted,</if>
+            <if test="employeeId != null">employee_id,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="name != null">#{name},</if>
+            <if test="type != null">#{type},</if>
+            <if test="time != null">#{time},</if>
+            <if test="note != null">#{note},</if>
+            <if test="applyId != null">#{applyId},</if>
+            <if test="amount != null">#{amount},</if>
+            <if test="submitted != null">#{submitted},</if>
+            <if test="employeeId != null">#{employeeId},</if>
+        </trim>
+    </insert>
+
+
+    <update id="updateById" parameterType="com.example.entity.voucher.Reimbursement">
+        update reimbursement
+        <set>
+            <if test="name != null">
+                name = #{name},
+            </if>
+            <if test="type != null">
+                type = #{type},
+            </if>
+            <if test="time != null">
+                time = #{time},
+            </if>
+            <if test="note != null">
+                note = #{note},
+            </if>
+            <if test="applyId != null">
+                apply_id = #{applyId},
+            </if>
+            <if test="amount != null">
+                amount = #{amount},
+            </if>
+            <if test="submitted != null">
+                submitted = #{submitted},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+
+
+
+
+
+</mapper>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.VisibleMapper">
+
+    <sql id="Base_Column_List">
+        id,isHomeNoticeVisible,isHomeBarInVisible,isHomeLineInOutVisible,isHomeBarSalaryInVisible,isHomePieInVisible
+    </sql>
+
+    <select id="selectById" resultType="com.example.entity.Visible">
+        select
+        <include refid="Base_Column_List" />
+        from visible
+        where id = #{id}
+    </select>
+
+    <update id="updateById" parameterType="com.example.entity.Visible">
+        update visible
+        <set>
+            <if test="isHomeNoticeVisible != null">
+                isHomeNoticeVisible = #{isHomeNoticeVisible},
+            </if>
+            <if test="isHomeBarInVisible != null">
+                isHomeBarInVisible = #{isHomeBarInVisible},
+            </if>
+            <if test="isHomeLineInOutVisible != null">
+                isHomeLineInOutVisible = #{isHomeLineInOutVisible},
+            </if>
+            <if test="isHomeBarSalaryInVisible != null">
+                isHomeBarSalaryInVisible = #{isHomeBarSalaryInVisible},
+            </if>
+            <if test="isHomePieInVisible != null">
+                isHomePieInVisible = #{isHomePieInVisible},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+
+</mapper>

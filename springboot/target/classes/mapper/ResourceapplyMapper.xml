@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.ResourceapplyMapper">
+
+    <sql id="Base_Column_List">
+        id,employee_id,department_id,resources_id,num,time,process,status,note
+    </sql>
+
+    <select id="selectAll" resultType="com.example.entity.Resourceapply">
+        select resourceapply.*, employee.name as employeeName, department.name as departmentName,resources.name as resourcesName
+        from resourceapply
+        left join employee    on resourceapply.employee_id = employee.id
+        left join department  on resourceapply.department_id = department.id
+        left join resources   on resourceapply.resources_id = resources.id
+        <where>
+            <if test="id != null"> and id= #{id}</if>
+            <if test="employeeId != null"> and resourceapply.employee_id= #{employeeId}</if>
+            <if test="departmentId != null"> and resourceapply.department_id= #{departmentId}</if>
+            <if test="resourcesId != null"> and resourceapply.resources_id= #{resourcesId}</if>
+            <if test="num != null"> and num= #{num}</if>
+            <if test="time != null"> and time= #{time}</if>
+            <if test="process != null"> and process= #{process}</if>
+            <if test="status != null"> and status= #{status}</if>
+            <if test="note != null"> and note= #{note}</if>
+            <if test="resourcesName != null"> and resources.name like concat('%', #{resourcesName}, '%')</if>
+        </where>
+        order by id desc
+    </select>
+
+    <select id="selectById" resultType="com.example.entity.Resourceapply">
+        select
+        <include refid="Base_Column_List" />
+        from resourceapply
+        where id = #{id}
+    </select>
+
+    <delete id="deleteById">
+        delete from resourceapply
+        where  id = #{id}
+    </delete>
+
+    <insert id="insert" parameterType="com.example.entity.Resourceapply" useGeneratedKeys="true">
+        insert into resourceapply
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="employeeId != null">employee_id,</if>
+            <if test="departmentId != null">department_id,</if>
+            <if test="resourcesId != null">resources_id,</if>
+            <if test="num != null">num,</if>
+            <if test="time != null">time,</if>
+            <if test="process != null">process,</if>
+            <if test="status != null">status,</if>
+            <if test="note != null">note,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="employeeId != null">#{employeeId},</if>
+            <if test="departmentId != null">#{departmentId},</if>
+            <if test="resourcesId != null">#{resourcesId},</if>
+            <if test="num != null">#{num},</if>
+            <if test="time != null">#{time},</if>
+            <if test="process != null">#{process},</if>
+            <if test="status != null">#{status},</if>
+            <if test="note != null">#{note},</if>
+        </trim>
+    </insert>
+
+    <update id="updateById" parameterType="com.example.entity.Resourceapply">
+        update resourceapply
+        <set>
+            <if test="employeeId != null">
+                employee_id = #{employeeId},
+            </if>
+            <if test="departmentId != null">
+                department_id = #{departmentId},
+            </if>
+            <if test="resourcesId != null">
+                resources_id = #{resourcesId},
+            </if>
+            <if test="num != null">
+                num = #{num},
+            </if>
+            <if test="time != null">
+                time = #{time},
+            </if>
+            <if test="process != null">
+                process = #{process},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <if test="note != null">
+                note = #{note},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+</mapper>

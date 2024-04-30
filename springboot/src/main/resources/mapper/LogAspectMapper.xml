@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.LogAspectMapper">
+
+    <sql id="Base_Column_List">
+        id,operation_type,operation_time,operation_user,operation_content
+    </sql>
+
+
+    <insert id="insert" parameterType="com.example.entity.Aspect.Log" useGeneratedKeys="true" keyProperty="id">
+        insert into operation_log
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="operationType != null">operation_type,</if>
+            <if test="operationTime != null">operation_time,</if>
+            <if test="operationUser != null">operation_user,</if>
+            <if test="operationContent != null">operation_content,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="operationType != null">#{operationType},</if>
+            <if test="operationTime != null">#{operationTime},</if>
+            <if test="operationUser != null">#{operationUser},</if>
+            <if test="operationContent != null">#{operationContent},</if>
+        </trim>
+    </insert>
+
+    <select id="selectAll" resultType="com.example.entity.Aspect.Log">
+        select
+        <include refid="Base_Column_List" />
+        from operation_log
+        <where>
+            <if test="id != null"> and id= #{id}</if>
+            <if test="operationType != null"> and operation_type like concat('%', #{operationType}, '%')</if>
+            <if test="operationTime != null"> and operation_time = #{operationTime}</if>
+            <if test="operationUser != null"> and operation_user = #{operationUser}</if>
+            <if test="operationContent != null"> and operation_content = #{operationContent}</if>
+        </where>
+        order by id desc
+    </select>
+
+
+    <delete id="deleteById">
+        delete from operation_log
+        where  id = #{id}
+    </delete>
+
+
+    <update id="updateById" parameterType="com.example.entity.Aspect.Log">
+        update operation_log
+        <set>
+            <if test="operationType != null">   operation_type = #{operationType},</if>
+            <if test="operationTime != null">   operation_time = #{operationTime},</if>
+            <if test="operationUser != null">   operation_user = #{operationUser},</if>
+            <if test="operationContent != null">operation_content = #{operationContent},</if>
+        </set>
+        where id = #{id}
+    </update>
+
+
+
+</mapper>

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.ResourcesMapper">
+
+    <sql id="Base_Column_List">
+        id,name,img,price,num,type
+    </sql>
+
+    <select id="selectAll" resultType="com.example.entity.Resources">
+        select
+        <include refid="Base_Column_List" />
+        from resources
+        <where>
+            <if test="id != null"> and id= #{id}</if>
+            <if test="name != null"> and name like concat('%', #{name}, '%')</if>
+            <if test="img != null"> and img= #{img}</if>
+            <if test="price != null"> and time= #{price}</if>
+            <if test="num != null"> and num= #{num}</if>
+            <if test="type != null"> and type = #{type}</if>
+        </where>
+        order by id desc
+    </select>
+
+    <select id="selectById" resultType="com.example.entity.Resources">
+        select
+        <include refid="Base_Column_List" />
+        from resources
+        where id = #{id}
+    </select>
+
+    <select id="selectByType" resultType="com.example.entity.Resources">
+        select
+        <include refid="Base_Column_List" />
+        from resources
+        where type = #{type}
+    </select>
+
+    <select id="selectByTypeAndName" resultType="com.example.entity.Resources">
+        select
+        <include refid="Base_Column_List" />
+        from resources
+        where type = #{type} and name = #{name}
+    </select>
+
+    <delete id="deleteById">
+        delete from resources
+        where  id = #{id}
+    </delete>
+
+    <insert id="insert" parameterType="com.example.entity.Resources" useGeneratedKeys="true">
+        insert into resources
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="name != null">name,</if>
+            <if test="img != null">img,</if>
+            <if test="price != null">price,</if>
+            <if test="num != null">num,</if>
+            <if test="type != null">type,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="name != null">#{name},</if>
+            <if test="img != null">#{img},</if>
+            <if test="price != null">#{price},</if>
+            <if test="num != null">#{num},</if>
+            <if test="type != null">#{type},</if>
+        </trim>
+    </insert>
+
+    <update id="updateById" parameterType="com.example.entity.Resources">
+        update resources
+        <set>
+            <if test="name != null">
+                name = #{name},
+            </if>
+            <if test="img != null">
+                img = #{img},
+            </if>
+            <if test="price != null">
+                price = #{price},
+            </if>
+            <if test="num != null">
+                num = #{num},
+            </if>
+            <if test="type != null">
+                type = #{type},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+</mapper>

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.ReimbursementApplyMapper">
+
+    <sql id="Base_Column_List">
+        id,reimbursement_id,employee_id,employee_solve,time,status,process,note
+    </sql>
+
+    <select id="selectAll" resultType="com.example.entity.voucher.ReimbursementApply">
+        select *
+        from reimbursementapply
+        <where>
+            <if test="id != null"> and id= #{id}</if>
+            <if test="reimbursementId != null"> and reimbursement_id = #{reimbursementId}</if>
+            <if test="employeeId != null"> and employee_id= #{ employeeId}</if>
+            <if test="employeeSolve != null"> and employee_solve= #{employeeSolve}</if>
+            <if test="time != null"> and time= #{time}</if>
+            <if test="status != null"> and status= #{status}</if>
+            <if test="process != null"> and process= #{process}</if>
+            <if test="note != null"> and note = #{note}</if>
+        </where>
+        order by id desc
+    </select>
+
+    <update id="updateById" parameterType="com.example.entity.voucher.ReimbursementApply">
+        UPDATE reimbursementapply
+        <set>
+            <if test="reimbursementId != null">reimbursement_id = #{reimbursementId},</if>
+            <if test="employeeId != null">employee_id = #{employeeId},</if>
+            <if test="employeeSolve != null">employee_solve = #{employeeSolve},</if>
+            <if test="time != null">time = #{time},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="process != null">process = #{process},</if>
+            <if test="note != null">note = #{note},</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+
+    <insert id="insert" parameterType="com.example.entity.voucher.ReimbursementApply" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO reimbursementapply
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="reimbursementId != null">reimbursement_id,</if>
+            <if test="employeeId != null">employee_id,</if>
+            <if test="employeeSolve != null">employee_solve,</if>
+            <if test="time != null">time,</if>
+            <if test="status != null">status,</if>
+            <if test="process != null">process,</if>
+            <if test="note != null">note,</if>
+        </trim>
+        VALUES
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="reimbursementId != null">#{reimbursementId},</if>
+            <if test="employeeId != null">#{employeeId},</if>
+            <if test="employeeSolve != null">#{employeeSolve},</if>
+            <if test="time != null">#{time},</if>
+            <if test="status != null">#{status},</if>
+            <if test="process != null">#{process},</if>
+            <if test="note != null">#{note},</if>
+        </trim>
+    </insert>
+
+    <select id="selectById" resultType="com.example.entity.voucher.ReimbursementApply">
+        select
+        <include refid="Base_Column_List" />
+        from reimbursementapply
+        where id = #{id}
+    </select>
+
+    <select id="selectByReimbursementId" resultType="com.example.entity.voucher.ReimbursementApply">
+        select
+        <include refid="Base_Column_List" />
+        from reimbursementapply
+        where reimbursement_id = #{reimbursementId}
+    </select>
+
+    <delete id="deleteById">
+        delete from reimbursementapply
+        where  id = #{id}
+    </delete>
+
+
+
+
+
+
+</mapper>

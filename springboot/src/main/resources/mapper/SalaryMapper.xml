@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.SalaryMapper">
+
+    <sql id="Base_Column_List">
+        id,employee_id,department_id,year,time,price,note
+    </sql>
+
+    <select id="selectAll" resultType="com.example.entity.Salary">
+        select salary.*, employee.name as employeeName, department.name as departmentName
+        from salary
+        left join employee on salary.employee_id = employee.id
+        left join department on salary.department_id = department.id
+        <where>
+            <if test="id != null"> and id= #{id}</if>
+            <if test="employeeId != null"> and salary.employee_id= #{employeeId}</if>
+            <if test="departmentId != null"> and department_id= #{departmentId}</if>
+            <if test="year != null"> and year= #{year}</if>
+            <if test="time != null"> and time= #{time}</if>
+            <if test="price != null"> and price= #{price}</if>
+            <if test="note != null"> and note= #{note}</if>
+        </where>
+        order by id desc
+    </select>
+
+    <select id="selectByEmployeeId" resultType="com.example.entity.Salary">
+        select
+        <include refid="Base_Column_List" />
+        from salary
+        where employee_id = #{employeeId}
+        order by id desc
+    </select>
+    <select id="selectByDepartmentId" resultType="com.example.entity.Salary">
+        select
+        <include refid="Base_Column_List" />
+        from salary
+        where department_id = #{departmentId}
+        order by id desc
+    </select>
+
+    <select id="selectById" resultType="com.example.entity.Salary">
+        select
+        <include refid="Base_Column_List" />
+        from salary
+        where id = #{id}
+    </select>
+
+    <delete id="deleteById">
+        delete from salary
+        where  id = #{id}
+    </delete>
+
+    <insert id="insert" parameterType="com.example.entity.Salary" useGeneratedKeys="true">
+        insert into salary
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="employeeId != null">employee_id,</if>
+            <if test="departmentId != null">department_id,</if>
+            <if test="year != null">year,</if>
+            <if test="time != null">time,</if>
+            <if test="price != null">price,</if>
+            <if test="note != null">note,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="employeeId != null">#{employeeId},</if>
+            <if test="departmentId != null">#{departmentId},</if>
+            <if test="year != null">#{year},</if>
+            <if test="time != null">#{time},</if>
+            <if test="price != null">#{price},</if>
+            <if test="note != null">#{note},</if>
+        </trim>
+    </insert>
+
+    <update id="updateById" parameterType="com.example.entity.Salary">
+        update salary
+        <set>
+            <if test="employeeId != null">
+                employee_id = #{employeeId},
+            </if>
+            <if test="departmentId != null">
+                department_id = #{departmentId},
+            </if>
+            <if test="year != null">
+                year = #{year},
+            </if>
+            <if test="time != null">
+                time = #{time},
+            </if>
+            <if test="price != null">
+                price = #{price},
+            </if>
+            <if test="note != null">
+                note = #{note},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+</mapper>

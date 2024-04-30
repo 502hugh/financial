@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.UserMapper">
+
+    <sql id="Base_Column_List">
+        id,username,password,role
+    </sql>
+
+    <select id="selectAll" resultType="com.example.entity.User">
+        select
+        <include refid="Base_Column_List" />
+        from user
+        <where>
+            <if test="id != null"> and id= #{id}</if>
+            <if test="username != null"> and username like concat('%', #{username}, '%')</if>
+            <if test="password != null"> and password= #{password}</if>
+            <if test="role != null"> and role= #{role}</if>
+            <if test="roleid != null"> and role= #{roleid}</if>
+        </where>
+    </select>
+
+    <select id="selectByRoleid" resultType="com.example.entity.User">
+        select
+        <include refid="Base_Column_List" />
+        from user
+        where roleid = #{roleid}
+    </select>
+
+    <delete id="deleteByRoleid">
+        delete from user
+        where  roleid = #{roleid}
+    </delete>
+
+    <insert id="insert" parameterType="com.example.entity.User" useGeneratedKeys="true">
+        insert into user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="id != null">id,</if>
+                <if test="username != null">username,</if>
+                <if test="password != null">password,</if>
+                <if test="role != null">role,</if>
+                <if test="roleid != null">roleid,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+                <if test="id != null">#{id},</if>
+                <if test="username != null">#{username},</if>
+                <if test="password != null">#{password},</if>
+                <if test="role != null">#{role},</if>
+                <if test="roleid != null">#{roleid},</if>
+        </trim>
+    </insert>
+
+    <update id="updateByRoleid" parameterType="com.example.entity.User">
+        update user
+        <set>
+            <if test="username != null">
+                username = #{username},
+            </if>
+            <if test="password != null">
+                password = #{password},
+            </if>
+            <if test="role != null">
+                role = #{role},
+            </if>
+        </set>
+        where roleid = #{roleid}
+    </update>
+
+</mapper>

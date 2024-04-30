@@ -1,0 +1,42 @@
+package com.example.mapper;
+
+import com.example.entity.Department;
+import com.example.entity.Employee;
+import org.apache.ibatis.annotations.Select;
+
+import java.util.List;
+
+public interface DepartmentMapper {
+
+    /**
+     * 新增
+     */
+    int insert(Department department);
+
+    /**
+     * 删除
+     */
+    int deleteById(Integer id);
+
+    /**
+     * 修改
+     */
+    int updateById(Department department);
+
+    /**
+     * 根据ID查询
+     */
+    Department selectById(Integer id);
+
+    /**
+     * 查询所有
+     */
+    List<Department> selectAll(Department department);
+
+    @Select("select * from department where name = #{name}")
+    Department selectByName(String name);
+
+    Department selectByPowerName(String PowerName);
+    @Select("select * from department where employee_id = #{id}")
+    Department selectByEmployeeId(Integer id);
+}

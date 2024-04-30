@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.SalaryManagerMapper">
+
+    <sql id="Base_Column_List">
+        id,employee_id,basic_salary,position_salary,performance_bonus,other_allowance,social_insurance,housing_fund,personal_income_tax,salary_date,
+    </sql>
+
+    <select id="selectAll" resultType="com.example.entity.SalaryManager">
+        select salarymanager.*,employee.name as employeeName
+        from salarymanager
+        left join employee on  employee.id = salarymanager.employee_id
+        <where>
+            <if test="id != null"> and salarymanager.id= #{id}</if>
+            <if test="employeeId != null"> and employee_id= #{employeeId}</if>
+            <if test="basicSalary != null"> and basic_salary= #{basicSalary}</if>
+            <if test="positionSalary != null"> and position_salary= #{positionSalary}</if>
+            <if test="performanceBonus != null"> and performance_bonus= #{performanceBonus}</if>
+            <if test="otherAllowance != null"> and other_allowance= #{otherAllowance}</if>
+            <if test="socialInsurance != null"> and social_insurance= #{socialInsurance}</if>
+            <if test="housingFund != null"> and housing_fund= #{housingFund}</if>
+            <if test="personalIncomeTax != null"> and personal_income_tax= #{personalIncomeTax}</if>
+            <if test="salaryDate != null"> and salary_date= #{salaryDate}</if>
+        </where>
+        order by id desc
+    </select>
+
+
+    <select id="selectByEmployeeId" resultType="com.example.entity.SalaryManager">
+        select *
+        from salarymanager
+        where employee_id = #{employeeId}
+    </select>
+
+    <select id="selectById" resultType="com.example.entity.SalaryManager">
+        select *
+        from salarymanager
+        where id = #{id}
+    </select>
+
+
+
+
+    <select id="selectSalary" resultType="com.example.entity.Salary">
+        select
+            employee_id as employeeId,
+            COALESCE(basic_salary, 0) + COALESCE(position_salary, 0) + COALESCE(performance_bonus, 0) + COALESCE(other_allowance, 0) - COALESCE(personal_income_tax, 0) AS price
+        from salarymanager
+    </select>
+
+    <select id="selectSalaryOne" resultType="com.example.entity.Salary">
+        select
+            employee_id as employeeId,
+            COALESCE(basic_salary, 0) + COALESCE(position_salary, 0) + COALESCE(performance_bonus, 0) + COALESCE(other_allowance, 0) - COALESCE(personal_income_tax, 0) AS price,
+            salary_date as time
+        from salarymanager
+        where id = #{id}
+    </select>
+
+    <delete id="deleteById">
+        delete from salarymanager
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteByEmployeeId">
+        delete from salarymanager
+        where employee_id = #{EmployeeId}
+    </delete>
+
+
+
+
+
+
+
+    <update id="updateById" parameterType="com.example.entity.SalaryManager">
+        update salarymanager
+        <set>
+            <if test="employeeId != null">
+                employee_id = #{employeeId},
+            </if>
+            <if test="basicSalary != null">
+                basic_salary = #{basicSalary},
+            </if>
+            <if test="positionSalary != null">
+                position_salary = #{positionSalary},
+            </if>
+            <if test="performanceBonus != null">
+                performance_bonus = #{performanceBonus},
+            </if>
+            <if test="otherAllowance != null">
+                other_allowance = #{otherAllowance},
+            </if>
+            <if test="socialInsurance != null">
+                social_insurance = #{socialInsurance},
+            </if>
+            <if test="housingFund != null">
+                housing_fund = #{housingFund},
+            </if>
+            <if test="personalIncomeTax != null">
+                personal_income_tax = #{personalIncomeTax},
+            </if>
+            <if test="salaryDate != null">
+                salary_date = #{salaryDate},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+
+    <insert id="insert" parameterType="com.example.entity.SalaryManager" useGeneratedKeys="true">
+        insert into salarymanager
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="employeeId != null"> employee_id,</if>
+            <if test="basicSalary != null">  basic_salary,</if>
+            <if test="positionSalary != null">  position_salary,</if>
+            <if test="performanceBonus != null"> performance_bonus,</if>
+            <if test="otherAllowance != null"> other_allowance,</if>
+            <if test="socialInsurance != null"> social_insurance,</if>
+            <if test="housingFund != null"> housing_fund,</if>
+            <if test="personalIncomeTax != null"> personal_income_tax,</if>
+            <if test="salaryDate != null">  salary_date,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="employeeId != null">#{employeeId},</if>
+            <if test="basicSalary != null"> #{basicSalary},</if>
+            <if test="positionSalary != null"> #{positionSalary},</if>
+            <if test="performanceBonus != null"> #{performanceBonus},</if>
+            <if test="otherAllowance != null">  #{otherAllowance},</if>
+            <if test="socialInsurance != null">  #{socialInsurance},</if>
+            <if test="housingFund != null"> #{housingFund},</if>
+            <if test="personalIncomeTax != null"> #{personalIncomeTax},</if>
+            <if test="salaryDate != null">  #{salaryDate},</if>
+        </trim>
+    </insert>
+
+
+</mapper>

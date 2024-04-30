@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.VoucherPictureMapper">
+
+
+    <sql id="Base_Column_List">
+        id,picture,reimbursement_id
+    </sql>
+
+    <select id="selectAll" resultType="com.example.entity.voucher.VoucherPicture">
+        select
+        <include refid="Base_Column_List" />
+        from voucherpicture
+        <where>
+            <if test="id != null"> and id= #{id}</if>
+            <if test="picture != null"> and picture = #{picture}</if>
+            <if test="reimbursementId != null"> and reimbursement_id= #{reimbursementId}</if>
+        </where>
+    </select>
+
+    <update id="updateById"  parameterType="com.example.entity.voucher.VoucherPicture">
+        update voucherpicture
+        <set>
+            <if test="picture != null">
+                picture  = #{picture},
+            </if>
+            <if test="reimbursementId != null">
+            reimbursement_id= #{reimbursementId},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <update id="updateByReimbursementId"  parameterType="com.example.entity.voucher.VoucherPicture">
+        update voucherpicture
+        <set>
+            <if test="picture != null">
+                picture  = #{picture },
+            </if>
+        </set>
+        where reimbursement_id = #{reimbursementId}
+    </update>
+
+    <insert id="insert" parameterType="com.example.entity.voucher.VoucherPicture" useGeneratedKeys="true">
+        insert into voucherpicture
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="picture != null">picture,</if>
+            <if test="reimbursementId != null">reimbursement_id,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="picture != null">#{picture},</if>
+            <if test="reimbursementId != null">#{reimbursementId},</if>
+        </trim>
+    </insert>
+
+    <select id="selectById" resultType="com.example.entity.voucher.VoucherPicture">
+        select
+        <include refid="Base_Column_List" />
+        from voucherpicture
+        where id = #{id}
+    </select>
+
+
+
+    <select id="selectByReimbursementId" resultType="com.example.entity.voucher.VoucherPicture">
+        select
+        <include refid="Base_Column_List" />
+        from voucherpicture
+        where reimbursement_id = #{reimbursementId}
+    </select>
+
+    <delete id="deleteById">
+        delete from voucherpicture
+        where  id = #{id}
+    </delete>
+
+    <delete id="deleteByReimbursementId">
+        delete from voucherpicture
+        where  reimbursement_id = #{reimbursementId}
+    </delete>
+
+
+
+</mapper>
