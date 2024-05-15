@@ -11,6 +11,7 @@ package com.example.controller;
 
 import com.example.common.Result;
 import com.example.common.enums.ResultCodeEnum;
+import com.example.entity.Resourceapply;
 import com.example.entity.Resources;
 import com.example.service.ResourcesService;
 import com.github.pagehelper.PageInfo;
@@ -43,6 +44,9 @@ public class ResourcesController {
         resourcesService.deleteById(id);
         return Result.success();
     }
+
+
+
 
     /**
      * 批量删除

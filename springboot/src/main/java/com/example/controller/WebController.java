@@ -39,6 +39,7 @@ public class WebController {
      */
     @PostMapping("/login")
     public Result login(@RequestBody Account account) {
+        System.out.println(account.getUsername()+account.getPassword());
         if (ObjectUtil.isEmpty(account.getUsername()) || ObjectUtil.isEmpty(account.getPassword())) {
             return Result.error(ResultCodeEnum.PARAM_LOST_ERROR);
         }

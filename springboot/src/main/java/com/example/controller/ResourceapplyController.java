@@ -41,6 +41,12 @@ public class ResourceapplyController {
     /**
      * 新增
      */
+    @PostMapping("/judgmentNum")
+    public Result judgmentNum(@RequestBody Resourceapply resourceapply) {
+        Result result = resourceapplyService.judgmentNum(resourceapply);
+        return result;
+    }
+
     @PostMapping("/add")
     public Result add(@RequestBody Resourceapply resourceapply) {
         resourceapplyService.add(resourceapply);

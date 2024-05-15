@@ -98,8 +98,8 @@
 
     <el-dialog title="申请数量" :visible.sync="applyVisible" width="40%" :close-on-click-modal="false" destroy-on-close>
       <el-form label-width="100px" style="padding-right: 50px" :model="applyForm" :rules="rules1" >
-        <el-form-item prop="num" label="填写数量">
-          <el-input v-model="applyForm.num" autocomplete="off"></el-input>
+        <el-form-item prop="num" label="填写数量" :error="errorMessages.num" >
+          <el-input v-model="applyForm.num" autocomplete="off"  @change="handleNumChange"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -158,6 +158,9 @@ export default {
           { pattern: /^[1-9]\d*$/, message: '请输入正整数', trigger: 'blur' },
         ],
       },
+      errorMessages:{
+        num:'',//数量出错信息
+      },
       ids: [],
       employee:""
     }
@@ -169,6 +172,20 @@ export default {
     this.load(1)
   },
   methods: {
+    handleNumChange() {
+
+      this.errorMessages.num = '';
+      this.applyForm.employeeId = this.user.id
+      this.applyForm.resourcesId = this.applyForm.id
+      this.num = null
+      this.$request.post('/resourceapply/judgmentNum' , this.applyForm).then(res => {
+        if (res.code === '200') {
+          this.errorMessages.num = ''; // 清空错误信息
+        } else {
+          this.errorMessages.num = res.msg; // 设置错误信息
+        }
+      })
+    },
 
     downloadExcel() {
       // 发送请求到后端，下载文件
@@ -199,6 +216,7 @@ export default {
     } ,
     addApply(row) {
       // 深拷贝
+      this.errorMessages.num = '';
       this.applyForm = JSON.parse(JSON.stringify(row))
       this.applyForm.num = null
       this.applyVisible = true

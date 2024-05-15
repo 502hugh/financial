@@ -342,4 +342,16 @@ public class ResourceapplyService {
         resourcesService.updateById(resources);
         resourceapplyMapper.updateById(resourceapply_o);
     }
+
+    public Result judgmentNum(Resourceapply resourceapply) {
+        Integer num = resourceapply.getNum();
+        Resources resources = resourcesMapper.selectById(resourceapply.getResourcesId());
+        /**
+         * 判断资产数量
+         */
+        if (resources.getNum() < num) {
+            return Result.error(ResultCodeEnum.RESOURCES_NUM_ERROR);
+        }
+        return Result.success();
+    }
 }
