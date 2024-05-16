@@ -14,6 +14,7 @@ import com.example.common.Result;
 import com.example.common.enums.*;
 import com.example.entity.*;
 import com.example.exception.CustomException;
+import com.example.exception.GlobalExceptionHandler;
 import com.example.mapper.EmployeeMapper;
 import com.example.mapper.ResourceapplyMapper;
 import com.example.mapper.ResourcesMapper;
@@ -344,14 +345,19 @@ public class ResourceapplyService {
     }
 
     public Result judgmentNum(Resourceapply resourceapply) {
-        Integer num = resourceapply.getNum();
-        Resources resources = resourcesMapper.selectById(resourceapply.getResourcesId());
-        /**
-         * 判断资产数量
-         */
-        if (resources.getNum() < num) {
-            return Result.error(ResultCodeEnum.RESOURCES_NUM_ERROR);
-        }
-        return Result.success();
+
+            Integer num = resourceapply.getNum();
+            if(num == null){
+                return Result.error(ResultCodeEnum.PARAM_LOST_ERROR);
+            }
+            Resources resources = resourcesMapper.selectById(resourceapply.getResourcesId());
+            /**
+             * 判断资产数量
+             */
+            if (resources.getNum() < num) {
+                return Result.error(ResultCodeEnum.RESOURCES_NUM_ERROR);
+            }
+            return Result.success();
+
     }
 }

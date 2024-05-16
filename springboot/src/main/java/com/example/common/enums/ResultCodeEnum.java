@@ -11,6 +11,7 @@ public enum ResultCodeEnum {
     NEI_REGISTER_ERROR("4002","注册，内部错误"),
 
     SYSTEM_ERROR("500", "系统异常"),
+    DATE_ERROR("500", "数据格式错误"),
     USER_EXIST_ERROR("5001", "用户名已存在"),
     USER_NOT_LOGIN("5002", "用户未登录"),
     USER_ACCOUNT_ERROR("5003", "账号或密码错误"),
@@ -59,7 +60,8 @@ public enum ResultCodeEnum {
     //报账相关
     LACK_PICTURE("5071","缺少附件图片"),
     FILE_UP_NULL("5090","上传文件为空" ),
-    DATA_UP_FAILE("5091","全部数据上传失败"),;
+    DATA_UP_FAILE("5091","全部数据上传失败"),
+    ;
 
 
 

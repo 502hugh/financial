@@ -99,7 +99,7 @@
     <el-dialog title="申请数量" :visible.sync="applyVisible" width="40%" :close-on-click-modal="false" destroy-on-close>
       <el-form label-width="100px" style="padding-right: 50px" :model="applyForm" :rules="rules1" >
         <el-form-item prop="num" label="填写数量" :error="errorMessages.num" >
-          <el-input v-model="applyForm.num" autocomplete="off"  @change="handleNumChange"></el-input>
+          <el-input v-model="applyForm.num" autocomplete="off"   @blur="handleNumChange"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -155,7 +155,7 @@ export default {
       rules1:{
         num:[
           {required: true, message: '请输入数量', trigger: 'blur'},
-          { pattern: /^[1-9]\d*$/, message: '请输入正整数', trigger: 'blur' },
+          {pattern: /^[1-9]\d*$/, message: '请输入正整数', trigger: 'blur' },
         ],
       },
       errorMessages:{
@@ -177,7 +177,13 @@ export default {
       this.errorMessages.num = '';
       this.applyForm.employeeId = this.user.id
       this.applyForm.resourcesId = this.applyForm.id
-      this.num = null
+      //对applyFrom.num 做数据校验
+      const numPattern = /^[1-9]\d*$/;
+      if (!numPattern.test(this.applyForm.num)) {
+        this.errorMessages.num = '请输入正整数';
+        return;
+      }
+
       this.$request.post('/resourceapply/judgmentNum' , this.applyForm).then(res => {
         if (res.code === '200') {
           this.errorMessages.num = ''; // 清空错误信息
